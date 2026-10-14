@@ -1,0 +1,63 @@
+{
+  "date": "2026-10-14",
+  "pytest": {
+    "passed": 185,
+    "duration_seconds": 3.64,
+    "junit_xml": "docs/evidence/tests.xml"
+  },
+  "ruff_check": "All checks passed!",
+  "ruff_format": {
+    "files": 35
+  },
+  "mypy": {
+    "source_files": 27,
+    "issues": 0
+  },
+  "wheel_clean_environment": {
+    "python": "3.13.5",
+    "pydantic": "2.14.1",
+    "module_file": "/Users/ruamdes/MAI/python/lab1/.venv-release/lib/python3.13/site-packages/school_lab/__init__.py",
+    "repository_size": 12,
+    "report_count": 24,
+    "original_preserved": true,
+    "same_service": true
+  },
+  "pip_check": "No broken requirements found.",
+  "python_312_smoke": {
+    "python": "3.12.14",
+    "pydantic": "2.13.5",
+    "module_file": "/Users/ruamdes/MAI/python/lab1/.venv-py312/lib/python3.12/site-packages/school_lab/__init__.py",
+    "repository_size": 12,
+    "report_count": 24,
+    "original_preserved": true,
+    "same_service": true,
+    "dependency_source": "bundled runtime, system-site-packages"
+  },
+  "coverage": {
+    "covered_lines": 831,
+    "total_lines": 832,
+    "line_percent": 99.8798076923077,
+    "covered_branches": 162,
+    "total_branches": 162,
+    "branch_percent": 100.0,
+    "combined_percent": 99.89939637826961
+  },
+  "independent_review": {
+    "subagent": "comprehensive_review",
+    "confirmed_code_findings_fixed": 4,
+    "final_remaining_material_findings": 0,
+    "package_layout_review": "passed"
+  },
+  "package_entrypoints": [
+    "school-lab",
+    "python -m school_lab"
+  ],
+  "architecture_audit": {
+    "file": "docs/evidence/architecture.json",
+    "modules": 27,
+    "cycles": 0,
+    "core_layer_violations": 0,
+    "source_comments": 0,
+    "source_docstrings": 0
+  }
+}

@@ -1,0 +1,952 @@
+{
+  "first_import": {
+    "accepted": [
+      "sub-001",
+      "sub-002",
+      "sub-003",
+      "sub-004",
+      "sub-005",
+      "sub-006",
+      "sub-007",
+      "sub-008",
+      "sub-009",
+      "sub-010",
+      "sub-011",
+      "sub-012"
+    ],
+    "duplicate": [],
+    "errors": []
+  },
+  "repeat_import": {
+    "accepted": [],
+    "duplicate": [
+      "sub-001",
+      "sub-002",
+      "sub-003",
+      "sub-004",
+      "sub-005",
+      "sub-006",
+      "sub-007",
+      "sub-008",
+      "sub-009",
+      "sub-010",
+      "sub-011",
+      "sub-012"
+    ],
+    "errors": []
+  },
+  "mixed_import": {
+    "accepted": [
+      "sub-001",
+      "sub-002"
+    ],
+    "duplicate": [
+      "sub-001"
+    ],
+    "errors": [
+      {
+        "line_no": 2,
+        "code": "invalid_json",
+        "field": "json",
+        "message": "Ошибка JSON около столбца 2"
+      },
+      {
+        "line_no": 4,
+        "code": "conflict",
+        "field": "submission_id",
+        "message": "ID уже связан с другой версией"
+      },
+      {
+        "line_no": 5,
+        "code": "schema_error",
+        "field": "student_id",
+        "message": "Ожидается непустая строка"
+      }
+    ]
+  },
+  "in_memory_import": {
+    "accepted": [
+      "sub-001",
+      "sub-002",
+      "sub-003",
+      "sub-004",
+      "sub-005",
+      "sub-006",
+      "sub-007",
+      "sub-008",
+      "sub-009",
+      "sub-010",
+      "sub-011",
+      "sub-012"
+    ],
+    "duplicate": [],
+    "errors": []
+  },
+  "conflict": {
+    "code": "conflict",
+    "field": "submission_id",
+    "message": "ID уже связан с другой версией"
+  },
+  "original_preserved": true,
+  "repository_size": 12,
+  "report_count": 24,
+  "reports": [
+    {
+      "report_id": "c0382e0a-a918-43fa-9078-f88b2697af13",
+      "submission_id": "sub-001",
+      "submission_hash": "7608f657e205978dccc55617a6dacfb06295412a294506646f7608e45e720ec0",
+      "analyzer_id": "length",
+      "analyzer_version": "1.0",
+      "config_hash": "5754ce59a543985f895896a8af0e13b7c43f5e82b32ea01e5360dcfc1a1bb322",
+      "findings": [
+        {
+          "kind": "rubric_feedback",
+          "score": null,
+          "evidence": [
+            {
+              "submission_id": "sub-001",
+              "field": "text",
+              "start_line": 1,
+              "end_line": 1
+            },
+            {
+              "submission_id": "sub-001",
+              "field": "code",
+              "start_line": 1,
+              "end_line": 1
+            },
+            {
+              "submission_id": "sub-001",
+              "field": "code",
+              "start_line": 3,
+              "end_line": 3
+            },
+            {
+              "submission_id": "sub-001",
+              "field": "code",
+              "start_line": 4,
+              "end_line": 4
+            }
+          ],
+          "explanation": "Непустые строки: text=1, code=3. Количество строк не оценивает корректность решения."
+        }
+      ],
+      "created_at": "2026-10-14T16:37:24.322718+00:00",
+      "review_required": false
+    },
+    {
+      "report_id": "ba0579b1-d22c-4005-a874-61e6a8936b2e",
+      "submission_id": "sub-001",
+      "submission_hash": "7608f657e205978dccc55617a6dacfb06295412a294506646f7608e45e720ec0",
+      "analyzer_id": "template",
+      "analyzer_version": "1.0",
+      "config_hash": "5754ce59a543985f895896a8af0e13b7c43f5e82b32ea01e5360dcfc1a1bb322",
+      "findings": [
+        {
+          "kind": "similarity",
+          "score": null,
+          "evidence": [
+            {
+              "submission_id": "sub-001",
+              "field": "code",
+              "start_line": 1,
+              "end_line": 1
+            }
+          ],
+          "explanation": "Найдены разрешённые блоки шаблона: 1. Совпадение разрешено и не доказывает плагиат."
+        }
+      ],
+      "created_at": "2026-10-14T16:37:24.323621+00:00",
+      "review_required": false
+    },
+    {
+      "report_id": "8d89e273-e17b-48df-a2d6-24e0b3e282c2",
+      "submission_id": "sub-002",
+      "submission_hash": "35aebdfb3c80e3d6d3e6cd3d92cf35dbe728a27278a24a637ebdb598c402928d",
+      "analyzer_id": "length",
+      "analyzer_version": "1.0",
+      "config_hash": "5754ce59a543985f895896a8af0e13b7c43f5e82b32ea01e5360dcfc1a1bb322",
+      "findings": [
+        {
+          "kind": "rubric_feedback",
+          "score": null,
+          "evidence": [
+            {
+              "submission_id": "sub-002",
+              "field": "text",
+              "start_line": 1,
+              "end_line": 1
+            },
+            {
+              "submission_id": "sub-002",
+              "field": "code",
+              "start_line": 1,
+              "end_line": 1
+            },
+            {
+              "submission_id": "sub-002",
+              "field": "code",
+              "start_line": 3,
+              "end_line": 3
+            },
+            {
+              "submission_id": "sub-002",
+              "field": "code",
+              "start_line": 4,
+              "end_line": 4
+            }
+          ],
+          "explanation": "Непустые строки: text=1, code=3. Количество строк не оценивает корректность решения."
+        }
+      ],
+      "created_at": "2026-10-14T16:37:24.323698+00:00",
+      "review_required": false
+    },
+    {
+      "report_id": "aea4b7bf-5228-4f95-a5c5-8b701408acf7",
+      "submission_id": "sub-002",
+      "submission_hash": "35aebdfb3c80e3d6d3e6cd3d92cf35dbe728a27278a24a637ebdb598c402928d",
+      "analyzer_id": "template",
+      "analyzer_version": "1.0",
+      "config_hash": "5754ce59a543985f895896a8af0e13b7c43f5e82b32ea01e5360dcfc1a1bb322",
+      "findings": [
+        {
+          "kind": "similarity",
+          "score": null,
+          "evidence": [
+            {
+              "submission_id": "sub-002",
+              "field": "code",
+              "start_line": 1,
+              "end_line": 1
+            }
+          ],
+          "explanation": "Найдены разрешённые блоки шаблона: 1. Совпадение разрешено и не доказывает плагиат."
+        }
+      ],
+      "created_at": "2026-10-14T16:37:24.323773+00:00",
+      "review_required": false
+    },
+    {
+      "report_id": "e6f51b5d-67ed-47ec-8135-187a67938db7",
+      "submission_id": "sub-003",
+      "submission_hash": "ec9f909a199691e2d2ac5d10600cfcbf04474c2393e959103a9902ca6a7659da",
+      "analyzer_id": "length",
+      "analyzer_version": "1.0",
+      "config_hash": "5754ce59a543985f895896a8af0e13b7c43f5e82b32ea01e5360dcfc1a1bb322",
+      "findings": [
+        {
+          "kind": "rubric_feedback",
+          "score": null,
+          "evidence": [
+            {
+              "submission_id": "sub-003",
+              "field": "text",
+              "start_line": 1,
+              "end_line": 1
+            },
+            {
+              "submission_id": "sub-003",
+              "field": "code",
+              "start_line": 1,
+              "end_line": 1
+            },
+            {
+              "submission_id": "sub-003",
+              "field": "code",
+              "start_line": 3,
+              "end_line": 3
+            },
+            {
+              "submission_id": "sub-003",
+              "field": "code",
+              "start_line": 4,
+              "end_line": 4
+            }
+          ],
+          "explanation": "Непустые строки: text=1, code=3. Количество строк не оценивает корректность решения."
+        }
+      ],
+      "created_at": "2026-10-14T16:37:24.323842+00:00",
+      "review_required": false
+    },
+    {
+      "report_id": "bdbfa3b6-6466-4e69-b583-7c2705954bb9",
+      "submission_id": "sub-003",
+      "submission_hash": "ec9f909a199691e2d2ac5d10600cfcbf04474c2393e959103a9902ca6a7659da",
+      "analyzer_id": "template",
+      "analyzer_version": "1.0",
+      "config_hash": "5754ce59a543985f895896a8af0e13b7c43f5e82b32ea01e5360dcfc1a1bb322",
+      "findings": [
+        {
+          "kind": "similarity",
+          "score": null,
+          "evidence": [
+            {
+              "submission_id": "sub-003",
+              "field": "code",
+              "start_line": 1,
+              "end_line": 1
+            }
+          ],
+          "explanation": "Найдены разрешённые блоки шаблона: 1. Совпадение разрешено и не доказывает плагиат."
+        }
+      ],
+      "created_at": "2026-10-14T16:37:24.323924+00:00",
+      "review_required": false
+    },
+    {
+      "report_id": "2a32ceab-6f03-4cf3-8db6-624de2c2443e",
+      "submission_id": "sub-004",
+      "submission_hash": "6272ba33fd89f2bd44982089e0ac6e4662ca8bf067bd8e285da178c91fbadc39",
+      "analyzer_id": "length",
+      "analyzer_version": "1.0",
+      "config_hash": "5754ce59a543985f895896a8af0e13b7c43f5e82b32ea01e5360dcfc1a1bb322",
+      "findings": [
+        {
+          "kind": "rubric_feedback",
+          "score": null,
+          "evidence": [
+            {
+              "submission_id": "sub-004",
+              "field": "text",
+              "start_line": 1,
+              "end_line": 1
+            },
+            {
+              "submission_id": "sub-004",
+              "field": "code",
+              "start_line": 1,
+              "end_line": 1
+            },
+            {
+              "submission_id": "sub-004",
+              "field": "code",
+              "start_line": 3,
+              "end_line": 3
+            },
+            {
+              "submission_id": "sub-004",
+              "field": "code",
+              "start_line": 4,
+              "end_line": 4
+            },
+            {
+              "submission_id": "sub-004",
+              "field": "code",
+              "start_line": 5,
+              "end_line": 5
+            },
+            {
+              "submission_id": "sub-004",
+              "field": "code",
+              "start_line": 6,
+              "end_line": 6
+            },
+            {
+              "submission_id": "sub-004",
+              "field": "code",
+              "start_line": 7,
+              "end_line": 7
+            },
+            {
+              "submission_id": "sub-004",
+              "field": "code",
+              "start_line": 8,
+              "end_line": 8
+            }
+          ],
+          "explanation": "Непустые строки: text=1, code=7. Количество строк не оценивает корректность решения."
+        }
+      ],
+      "created_at": "2026-10-14T16:37:24.323994+00:00",
+      "review_required": false
+    },
+    {
+      "report_id": "d316036f-b138-4b9e-9894-30d253664509",
+      "submission_id": "sub-004",
+      "submission_hash": "6272ba33fd89f2bd44982089e0ac6e4662ca8bf067bd8e285da178c91fbadc39",
+      "analyzer_id": "template",
+      "analyzer_version": "1.0",
+      "config_hash": "5754ce59a543985f895896a8af0e13b7c43f5e82b32ea01e5360dcfc1a1bb322",
+      "findings": [
+        {
+          "kind": "similarity",
+          "score": null,
+          "evidence": [
+            {
+              "submission_id": "sub-004",
+              "field": "code",
+              "start_line": 1,
+              "end_line": 1
+            }
+          ],
+          "explanation": "Найдены разрешённые блоки шаблона: 1. Совпадение разрешено и не доказывает плагиат."
+        }
+      ],
+      "created_at": "2026-10-14T16:37:24.324075+00:00",
+      "review_required": false
+    },
+    {
+      "report_id": "7b86617f-5225-4ebd-bc8d-2406e6889d6e",
+      "submission_id": "sub-005",
+      "submission_hash": "d10948d01bd1ec226c454ac16176751cba5d2c4c77a79390f28fb44eda7b9843",
+      "analyzer_id": "length",
+      "analyzer_version": "1.0",
+      "config_hash": "5754ce59a543985f895896a8af0e13b7c43f5e82b32ea01e5360dcfc1a1bb322",
+      "findings": [
+        {
+          "kind": "rubric_feedback",
+          "score": null,
+          "evidence": [
+            {
+              "submission_id": "sub-005",
+              "field": "text",
+              "start_line": 1,
+              "end_line": 1
+            },
+            {
+              "submission_id": "sub-005",
+              "field": "code",
+              "start_line": 1,
+              "end_line": 1
+            },
+            {
+              "submission_id": "sub-005",
+              "field": "code",
+              "start_line": 3,
+              "end_line": 3
+            },
+            {
+              "submission_id": "sub-005",
+              "field": "code",
+              "start_line": 4,
+              "end_line": 4
+            }
+          ],
+          "explanation": "Непустые строки: text=1, code=3. Количество строк не оценивает корректность решения."
+        }
+      ],
+      "created_at": "2026-10-14T16:37:24.324145+00:00",
+      "review_required": false
+    },
+    {
+      "report_id": "6750e119-0a77-46fc-a3a2-d96442f8cbb6",
+      "submission_id": "sub-005",
+      "submission_hash": "d10948d01bd1ec226c454ac16176751cba5d2c4c77a79390f28fb44eda7b9843",
+      "analyzer_id": "template",
+      "analyzer_version": "1.0",
+      "config_hash": "5754ce59a543985f895896a8af0e13b7c43f5e82b32ea01e5360dcfc1a1bb322",
+      "findings": [
+        {
+          "kind": "similarity",
+          "score": null,
+          "evidence": [
+            {
+              "submission_id": "sub-005",
+              "field": "code",
+              "start_line": 1,
+              "end_line": 1
+            }
+          ],
+          "explanation": "Найдены разрешённые блоки шаблона: 1. Совпадение разрешено и не доказывает плагиат."
+        }
+      ],
+      "created_at": "2026-10-14T16:37:24.324214+00:00",
+      "review_required": false
+    },
+    {
+      "report_id": "27a651c5-a90f-4b2c-85ef-86e77be4a30d",
+      "submission_id": "sub-006",
+      "submission_hash": "9ce8b5f9178fef0f40c4e3bbe2fe9ee3153a7dd866754723a2e20cadbe40dfb9",
+      "analyzer_id": "length",
+      "analyzer_version": "1.0",
+      "config_hash": "5754ce59a543985f895896a8af0e13b7c43f5e82b32ea01e5360dcfc1a1bb322",
+      "findings": [
+        {
+          "kind": "rubric_feedback",
+          "score": null,
+          "evidence": [
+            {
+              "submission_id": "sub-006",
+              "field": "text",
+              "start_line": 1,
+              "end_line": 1
+            },
+            {
+              "submission_id": "sub-006",
+              "field": "code",
+              "start_line": 1,
+              "end_line": 1
+            },
+            {
+              "submission_id": "sub-006",
+              "field": "code",
+              "start_line": 3,
+              "end_line": 3
+            },
+            {
+              "submission_id": "sub-006",
+              "field": "code",
+              "start_line": 4,
+              "end_line": 4
+            },
+            {
+              "submission_id": "sub-006",
+              "field": "code",
+              "start_line": 5,
+              "end_line": 5
+            }
+          ],
+          "explanation": "Непустые строки: text=1, code=4. Количество строк не оценивает корректность решения."
+        }
+      ],
+      "created_at": "2026-10-14T16:37:24.324280+00:00",
+      "review_required": false
+    },
+    {
+      "report_id": "ee70e79d-e679-42de-9679-2b230f49967a",
+      "submission_id": "sub-006",
+      "submission_hash": "9ce8b5f9178fef0f40c4e3bbe2fe9ee3153a7dd866754723a2e20cadbe40dfb9",
+      "analyzer_id": "template",
+      "analyzer_version": "1.0",
+      "config_hash": "5754ce59a543985f895896a8af0e13b7c43f5e82b32ea01e5360dcfc1a1bb322",
+      "findings": [
+        {
+          "kind": "similarity",
+          "score": null,
+          "evidence": [
+            {
+              "submission_id": "sub-006",
+              "field": "code",
+              "start_line": 1,
+              "end_line": 1
+            }
+          ],
+          "explanation": "Найдены разрешённые блоки шаблона: 1. Совпадение разрешено и не доказывает плагиат."
+        }
+      ],
+      "created_at": "2026-10-14T16:37:24.324357+00:00",
+      "review_required": false
+    },
+    {
+      "report_id": "e961a6fa-103e-4ab6-a81f-2e42d71d6dca",
+      "submission_id": "sub-007",
+      "submission_hash": "19f270d5603e8df1e07d0e8edb704679db241c35f085806efc4663da6c688b08",
+      "analyzer_id": "length",
+      "analyzer_version": "1.0",
+      "config_hash": "5754ce59a543985f895896a8af0e13b7c43f5e82b32ea01e5360dcfc1a1bb322",
+      "findings": [
+        {
+          "kind": "rubric_feedback",
+          "score": null,
+          "evidence": [
+            {
+              "submission_id": "sub-007",
+              "field": "text",
+              "start_line": 1,
+              "end_line": 1
+            },
+            {
+              "submission_id": "sub-007",
+              "field": "code",
+              "start_line": 1,
+              "end_line": 1
+            },
+            {
+              "submission_id": "sub-007",
+              "field": "code",
+              "start_line": 3,
+              "end_line": 3
+            },
+            {
+              "submission_id": "sub-007",
+              "field": "code",
+              "start_line": 4,
+              "end_line": 4
+            },
+            {
+              "submission_id": "sub-007",
+              "field": "code",
+              "start_line": 5,
+              "end_line": 5
+            }
+          ],
+          "explanation": "Непустые строки: text=1, code=4. Количество строк не оценивает корректность решения."
+        }
+      ],
+      "created_at": "2026-10-14T16:37:24.324423+00:00",
+      "review_required": false
+    },
+    {
+      "report_id": "9366ff9a-3684-4375-bbd6-9111c64c7f0f",
+      "submission_id": "sub-007",
+      "submission_hash": "19f270d5603e8df1e07d0e8edb704679db241c35f085806efc4663da6c688b08",
+      "analyzer_id": "template",
+      "analyzer_version": "1.0",
+      "config_hash": "5754ce59a543985f895896a8af0e13b7c43f5e82b32ea01e5360dcfc1a1bb322",
+      "findings": [
+        {
+          "kind": "similarity",
+          "score": null,
+          "evidence": [
+            {
+              "submission_id": "sub-007",
+              "field": "code",
+              "start_line": 1,
+              "end_line": 1
+            }
+          ],
+          "explanation": "Найдены разрешённые блоки шаблона: 1. Совпадение разрешено и не доказывает плагиат."
+        }
+      ],
+      "created_at": "2026-10-14T16:37:24.324496+00:00",
+      "review_required": false
+    },
+    {
+      "report_id": "964b215b-e717-4b77-8004-deac04f2c519",
+      "submission_id": "sub-008",
+      "submission_hash": "8f1694107ebec3de5b1994ddc59aa178228f29854b7ad6d7978de16bc0e213db",
+      "analyzer_id": "length",
+      "analyzer_version": "1.0",
+      "config_hash": "5754ce59a543985f895896a8af0e13b7c43f5e82b32ea01e5360dcfc1a1bb322",
+      "findings": [
+        {
+          "kind": "rubric_feedback",
+          "score": null,
+          "evidence": [
+            {
+              "submission_id": "sub-008",
+              "field": "text",
+              "start_line": 1,
+              "end_line": 1
+            },
+            {
+              "submission_id": "sub-008",
+              "field": "code",
+              "start_line": 1,
+              "end_line": 1
+            },
+            {
+              "submission_id": "sub-008",
+              "field": "code",
+              "start_line": 2,
+              "end_line": 2
+            }
+          ],
+          "explanation": "Непустые строки: text=1, code=2. Количество строк не оценивает корректность решения."
+        }
+      ],
+      "created_at": "2026-10-14T16:37:24.324562+00:00",
+      "review_required": false
+    },
+    {
+      "report_id": "f5be8366-55a2-4aa1-bbb0-891647cec89a",
+      "submission_id": "sub-008",
+      "submission_hash": "8f1694107ebec3de5b1994ddc59aa178228f29854b7ad6d7978de16bc0e213db",
+      "analyzer_id": "template",
+      "analyzer_version": "1.0",
+      "config_hash": "5754ce59a543985f895896a8af0e13b7c43f5e82b32ea01e5360dcfc1a1bb322",
+      "findings": [
+        {
+          "kind": "similarity",
+          "score": null,
+          "evidence": [],
+          "explanation": "Точное совпадение с разрешённым шаблоном не найдено. Нечёткое сходство не проверялось."
+        }
+      ],
+      "created_at": "2026-10-14T16:37:24.324627+00:00",
+      "review_required": false
+    },
+    {
+      "report_id": "0ef0fa1a-a2af-4646-ba59-d57e7610fc41",
+      "submission_id": "sub-009",
+      "submission_hash": "2fd18d05e43b05a20fef76d43a66907f2a5d5308aee86edb141da66304cb5b65",
+      "analyzer_id": "length",
+      "analyzer_version": "1.0",
+      "config_hash": "5754ce59a543985f895896a8af0e13b7c43f5e82b32ea01e5360dcfc1a1bb322",
+      "findings": [
+        {
+          "kind": "rubric_feedback",
+          "score": null,
+          "evidence": [
+            {
+              "submission_id": "sub-009",
+              "field": "text",
+              "start_line": 1,
+              "end_line": 1
+            },
+            {
+              "submission_id": "sub-009",
+              "field": "code",
+              "start_line": 1,
+              "end_line": 1
+            }
+          ],
+          "explanation": "Непустые строки: text=1, code=1. Количество строк не оценивает корректность решения."
+        }
+      ],
+      "created_at": "2026-10-14T16:37:24.324688+00:00",
+      "review_required": false
+    },
+    {
+      "report_id": "97709919-706a-4354-a23c-6e5e701c2d77",
+      "submission_id": "sub-009",
+      "submission_hash": "2fd18d05e43b05a20fef76d43a66907f2a5d5308aee86edb141da66304cb5b65",
+      "analyzer_id": "template",
+      "analyzer_version": "1.0",
+      "config_hash": "5754ce59a543985f895896a8af0e13b7c43f5e82b32ea01e5360dcfc1a1bb322",
+      "findings": [
+        {
+          "kind": "similarity",
+          "score": null,
+          "evidence": [],
+          "explanation": "Точное совпадение с разрешённым шаблоном не найдено. Нечёткое сходство не проверялось."
+        }
+      ],
+      "created_at": "2026-10-14T16:37:24.324751+00:00",
+      "review_required": false
+    },
+    {
+      "report_id": "d3253121-5432-4e6e-82d4-67dad4b01cbc",
+      "submission_id": "sub-010",
+      "submission_hash": "5cff593508ac95d7e84af358d2972a23643af4d40cb0a5cc5553cef189774a92",
+      "analyzer_id": "length",
+      "analyzer_version": "1.0",
+      "config_hash": "5754ce59a543985f895896a8af0e13b7c43f5e82b32ea01e5360dcfc1a1bb322",
+      "findings": [
+        {
+          "kind": "rubric_feedback",
+          "score": null,
+          "evidence": [
+            {
+              "submission_id": "sub-010",
+              "field": "text",
+              "start_line": 1,
+              "end_line": 1
+            },
+            {
+              "submission_id": "sub-010",
+              "field": "code",
+              "start_line": 1,
+              "end_line": 1
+            },
+            {
+              "submission_id": "sub-010",
+              "field": "code",
+              "start_line": 2,
+              "end_line": 2
+            }
+          ],
+          "explanation": "Непустые строки: text=1, code=2. Количество строк не оценивает корректность решения."
+        }
+      ],
+      "created_at": "2026-10-14T16:37:24.324811+00:00",
+      "review_required": false
+    },
+    {
+      "report_id": "369e89aa-db8a-4270-afbb-5179a0ad3560",
+      "submission_id": "sub-010",
+      "submission_hash": "5cff593508ac95d7e84af358d2972a23643af4d40cb0a5cc5553cef189774a92",
+      "analyzer_id": "template",
+      "analyzer_version": "1.0",
+      "config_hash": "5754ce59a543985f895896a8af0e13b7c43f5e82b32ea01e5360dcfc1a1bb322",
+      "findings": [
+        {
+          "kind": "similarity",
+          "score": null,
+          "evidence": [],
+          "explanation": "Точное совпадение с разрешённым шаблоном не найдено. Нечёткое сходство не проверялось."
+        }
+      ],
+      "created_at": "2026-10-14T16:37:24.324876+00:00",
+      "review_required": false
+    },
+    {
+      "report_id": "c1c268f6-c913-4c11-932a-44595214165f",
+      "submission_id": "sub-011",
+      "submission_hash": "4595bf408e39b88b69d867f4a9dee26df664588b50b142e96c4906515b1deb3f",
+      "analyzer_id": "length",
+      "analyzer_version": "1.0",
+      "config_hash": "5754ce59a543985f895896a8af0e13b7c43f5e82b32ea01e5360dcfc1a1bb322",
+      "findings": [
+        {
+          "kind": "rubric_feedback",
+          "score": null,
+          "evidence": [
+            {
+              "submission_id": "sub-011",
+              "field": "text",
+              "start_line": 1,
+              "end_line": 1
+            },
+            {
+              "submission_id": "sub-011",
+              "field": "code",
+              "start_line": 1,
+              "end_line": 1
+            },
+            {
+              "submission_id": "sub-011",
+              "field": "code",
+              "start_line": 3,
+              "end_line": 3
+            },
+            {
+              "submission_id": "sub-011",
+              "field": "code",
+              "start_line": 4,
+              "end_line": 4
+            },
+            {
+              "submission_id": "sub-011",
+              "field": "code",
+              "start_line": 5,
+              "end_line": 5
+            },
+            {
+              "submission_id": "sub-011",
+              "field": "code",
+              "start_line": 6,
+              "end_line": 6
+            },
+            {
+              "submission_id": "sub-011",
+              "field": "code",
+              "start_line": 7,
+              "end_line": 7
+            },
+            {
+              "submission_id": "sub-011",
+              "field": "code",
+              "start_line": 8,
+              "end_line": 8
+            }
+          ],
+          "explanation": "Непустые строки: text=1, code=7. Количество строк не оценивает корректность решения."
+        }
+      ],
+      "created_at": "2026-10-14T16:37:24.324942+00:00",
+      "review_required": false
+    },
+    {
+      "report_id": "13ed9145-defe-4ff8-bcf8-c5e3cfbdb4b5",
+      "submission_id": "sub-011",
+      "submission_hash": "4595bf408e39b88b69d867f4a9dee26df664588b50b142e96c4906515b1deb3f",
+      "analyzer_id": "template",
+      "analyzer_version": "1.0",
+      "config_hash": "5754ce59a543985f895896a8af0e13b7c43f5e82b32ea01e5360dcfc1a1bb322",
+      "findings": [
+        {
+          "kind": "similarity",
+          "score": null,
+          "evidence": [
+            {
+              "submission_id": "sub-011",
+              "field": "code",
+              "start_line": 1,
+              "end_line": 1
+            }
+          ],
+          "explanation": "Найдены разрешённые блоки шаблона: 1. Совпадение разрешено и не доказывает плагиат."
+        }
+      ],
+      "created_at": "2026-10-14T16:37:24.325027+00:00",
+      "review_required": false
+    },
+    {
+      "report_id": "bbccbc26-e35c-4718-b340-3550499d0dc4",
+      "submission_id": "sub-012",
+      "submission_hash": "ed1c7901b3fe14381e6c77cd303f0b004199f96e52f87f84731f6b40be658a09",
+      "analyzer_id": "length",
+      "analyzer_version": "1.0",
+      "config_hash": "5754ce59a543985f895896a8af0e13b7c43f5e82b32ea01e5360dcfc1a1bb322",
+      "findings": [
+        {
+          "kind": "rubric_feedback",
+          "score": null,
+          "evidence": [
+            {
+              "submission_id": "sub-012",
+              "field": "text",
+              "start_line": 1,
+              "end_line": 1
+            },
+            {
+              "submission_id": "sub-012",
+              "field": "code",
+              "start_line": 1,
+              "end_line": 1
+            },
+            {
+              "submission_id": "sub-012",
+              "field": "code",
+              "start_line": 3,
+              "end_line": 3
+            },
+            {
+              "submission_id": "sub-012",
+              "field": "code",
+              "start_line": 4,
+              "end_line": 4
+            }
+          ],
+          "explanation": "Непустые строки: text=1, code=3. Количество строк не оценивает корректность решения."
+        }
+      ],
+      "created_at": "2026-10-14T16:37:24.325093+00:00",
+      "review_required": false
+    },
+    {
+      "report_id": "e7c98b4b-7001-4097-82e8-220824e92005",
+      "submission_id": "sub-012",
+      "submission_hash": "ed1c7901b3fe14381e6c77cd303f0b004199f96e52f87f84731f6b40be658a09",
+      "analyzer_id": "template",
+      "analyzer_version": "1.0",
+      "config_hash": "5754ce59a543985f895896a8af0e13b7c43f5e82b32ea01e5360dcfc1a1bb322",
+      "findings": [
+        {
+          "kind": "similarity",
+          "score": null,
+          "evidence": [
+            {
+              "submission_id": "sub-012",
+              "field": "code",
+              "start_line": 1,
+              "end_line": 1
+            }
+          ],
+          "explanation": "Найдены разрешённые блоки шаблона: 1. Совпадение разрешено и не доказывает плагиат."
+        }
+      ],
+      "created_at": "2026-10-14T16:37:24.325161+00:00",
+      "review_required": false
+    }
+  ],
+  "extension": {
+    "same_service": true,
+    "registered": [
+      "length",
+      "template",
+      "declaration"
+    ],
+    "report": {
+      "report_id": "841f5db0-7e5e-43f3-90d0-08a0cdc2944f",
+      "submission_id": "sub-003",
+      "submission_hash": "ec9f909a199691e2d2ac5d10600cfcbf04474c2393e959103a9902ca6a7659da",
+      "analyzer_id": "declaration",
+      "analyzer_version": "1.0",
+      "config_hash": "5754ce59a543985f895896a8af0e13b7c43f5e82b32ea01e5360dcfc1a1bb322",
+      "findings": [
+        {
+          "kind": "rubric_feedback",
+          "score": null,
+          "evidence": [],
+          "explanation": "Использование ИИ заявлено. Инструмент: учебный помощник; цель: обсуждение решения. Декларация не доказывает авторство."
+        }
+      ],
+      "created_at": "2026-10-14T16:37:24.327613+00:00",
+      "review_required": false
+    }
+  }
+}

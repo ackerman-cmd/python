@@ -1,0 +1,123 @@
+{
+  "modules": 27,
+  "acyclic": true,
+  "layer_violations": [],
+  "source_comments": 0,
+  "source_docstrings": 0,
+  "internal_imports": {
+    "school_lab": [],
+    "school_lab.__main__": [
+      "school_lab.interfaces.cli"
+    ],
+    "school_lab.adapters": [],
+    "school_lab.adapters.acceptance": [
+      "school_lab.adapters.dto",
+      "school_lab.application.ports",
+      "school_lab.application.services",
+      "school_lab.domain.errors",
+      "school_lab.domain.models"
+    ],
+    "school_lab.adapters.dto": [
+      "school_lab.domain.errors",
+      "school_lab.domain.models",
+      "school_lab.domain.validation"
+    ],
+    "school_lab.adapters.json_codec": [
+      "school_lab.domain.errors"
+    ],
+    "school_lab.adapters.repositories": [
+      "school_lab.domain.errors",
+      "school_lab.domain.hashing",
+      "school_lab.domain.models"
+    ],
+    "school_lab.adapters.sources": [
+      "school_lab.adapters.json_codec",
+      "school_lab.application.ports",
+      "school_lab.domain.errors"
+    ],
+    "school_lab.analyzers": [],
+    "school_lab.analyzers.basic": [
+      "school_lab.application.reporting",
+      "school_lab.domain.errors",
+      "school_lab.domain.models"
+    ],
+    "school_lab.analyzers.extensions": [
+      "school_lab.analyzers.basic",
+      "school_lab.application.reporting",
+      "school_lab.domain.models"
+    ],
+    "school_lab.application": [],
+    "school_lab.application.ports": [
+      "school_lab.domain.errors",
+      "school_lab.domain.models"
+    ],
+    "school_lab.application.registry": [
+      "school_lab.application.ports",
+      "school_lab.domain.errors"
+    ],
+    "school_lab.application.reporting": [
+      "school_lab.domain.errors",
+      "school_lab.domain.hashing",
+      "school_lab.domain.models",
+      "school_lab.domain.validation"
+    ],
+    "school_lab.application.services": [
+      "school_lab.application.ports",
+      "school_lab.application.registry",
+      "school_lab.application.reporting",
+      "school_lab.domain.errors",
+      "school_lab.domain.hashing",
+      "school_lab.domain.models"
+    ],
+    "school_lab.bootstrap": [
+      "school_lab.adapters.acceptance",
+      "school_lab.adapters.dto",
+      "school_lab.adapters.json_codec",
+      "school_lab.adapters.repositories",
+      "school_lab.analyzers.basic",
+      "school_lab.application.ports",
+      "school_lab.application.registry",
+      "school_lab.application.services",
+      "school_lab.domain.errors",
+      "school_lab.domain.models",
+      "school_lab.domain.validation"
+    ],
+    "school_lab.domain": [],
+    "school_lab.domain.errors": [],
+    "school_lab.domain.hashing": [
+      "school_lab.domain.models"
+    ],
+    "school_lab.domain.models": [
+      "school_lab.domain.errors",
+      "school_lab.domain.validation"
+    ],
+    "school_lab.domain.validation": [
+      "school_lab.domain.errors"
+    ],
+    "school_lab.examples": [],
+    "school_lab.examples.benchmark": [
+      "school_lab.adapters.acceptance",
+      "school_lab.adapters.sources",
+      "school_lab.bootstrap",
+      "school_lab.examples.demo"
+    ],
+    "school_lab.examples.demo": [
+      "school_lab.adapters.acceptance",
+      "school_lab.adapters.dto",
+      "school_lab.adapters.sources",
+      "school_lab.analyzers.extensions",
+      "school_lab.bootstrap",
+      "school_lab.domain.errors",
+      "school_lab.domain.hashing"
+    ],
+    "school_lab.interfaces": [],
+    "school_lab.interfaces.cli": [
+      "school_lab.adapters.acceptance",
+      "school_lab.adapters.sources",
+      "school_lab.bootstrap",
+      "school_lab.domain.errors",
+      "school_lab.examples.benchmark",
+      "school_lab.examples.demo"
+    ]
+  }
+}
