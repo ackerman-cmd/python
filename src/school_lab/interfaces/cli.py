@@ -6,7 +6,7 @@ from pathlib import Path
 
 from school_lab.adapters.acceptance import import_source
 from school_lab.adapters.sources import JsonlSource
-from school_lab.analyzers.similarity import TOKEN_VERSION, token_features
+from school_lab.analyzers.similarity import AST_VERSION, TOKEN_VERSION, ast_features, token_features
 from school_lab.application.similarity import ComparisonService
 from school_lab.bootstrap import build_application, load_assignments, load_config
 from school_lab.domain.errors import ApplicationError, ConfigurationError
@@ -43,6 +43,10 @@ def main(argv: list[str] | None = None) -> int:
     compare.add_argument("--config-version", default="1")
     compare.add_argument("--top-k", type=_positive, default=5)
     compare.add_argument("--threshold", type=float, default=0.5)
+    compare.add_argument("--method", choices=("tokens", "ast"), default="tokens")
+    compare.add_argument(
+        "--indexed", action="store_true", help="Искать по индексу токеновых 3-грамм"
+    )
     args = parser.parse_args(argv)
     try:
         result: dict[str, object]
@@ -60,12 +64,20 @@ def main(argv: list[str] | None = None) -> int:
             summary = import_source(JsonlSource(args.path), app.acceptance_adapter)
             if not args.config_version.strip():
                 raise ConfigurationError("Нужна версия конфигурации", field="config_version")
+            if args.method == "ast" and args.indexed:
+                raise ConfigurationError("Индекс доступен для метода tokens", field="method")
+            method, extractor = (
+                (AST_VERSION, ast_features)
+                if args.method == "ast"
+                else (TOKEN_VERSION, token_features)
+            )
             service = ComparisonService(
                 app.repository.all(),
                 load_assignments(args.assignments),
-                method=TOKEN_VERSION,
-                extractor=token_features,
+                method=method,
+                extractor=extractor,
                 config_version=args.config_version,
+                indexed=args.indexed,
             )
             result = asdict(
                 service.top_k(args.submission_id, k=args.top_k, threshold=args.threshold)

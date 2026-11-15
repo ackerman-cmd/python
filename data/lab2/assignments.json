@@ -1,0 +1,12 @@
+[
+  {
+    "assignment_id": "lab2-aggregate",
+    "allowed_template": "from typing import Iterable\n",
+    "requirements": []
+  },
+  {
+    "assignment_id": "lab2-template",
+    "allowed_template": "from typing import Iterable\n",
+    "requirements": []
+  }
+]

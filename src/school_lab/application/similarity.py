@@ -7,7 +7,9 @@ from heapq import nsmallest
 from school_lab.domain.errors import AnalysisFailure
 from school_lab.domain.hashing import stable_hash, submission_hash
 from school_lab.domain.models import AnalysisContext, Assignment, Submission
-from school_lab.domain.similarity import CodeFeatures, LineRange, jaccard, merged_ranges
+from school_lab.domain.similarity import CodeFeatures, Feature, LineRange, jaccard, merged_ranges
+
+INDEX_VERSION = "shared-features-1"
 
 
 @dataclass(frozen=True, slots=True)
@@ -38,9 +40,13 @@ class PairResult:
 
 @dataclass(frozen=True, slots=True)
 class SearchResult:
+    schema_version: int
     assignment_id: str
     method: str
+    config_version: str
     config_hash: str
+    index_version: str | None
+    threshold: float
     comparisons: int
     same_student_versions: tuple[str, ...]
     candidates: tuple[PairResult, ...]
@@ -57,8 +63,11 @@ class ComparisonService:
         method: str,
         extractor: Callable[[str, str], CodeFeatures],
         config_version: str = "1",
+        indexed: bool = False,
     ) -> None:
         self.method = method
+        self.config_version = config_version
+        self.index_version = INDEX_VERSION if indexed else None
         self.config_hashes = {
             identifier: stable_hash(
                 {"method": method, **AnalysisContext(assignment, config_version).config_payload()}
@@ -68,6 +77,8 @@ class ComparisonService:
         self._cache: dict[tuple[str, str], CodeFeatures] = {}
         self._entries: dict[str, IndexedSubmission] = {}
         self._groups: dict[str, list[IndexedSubmission]] = {}
+        self._versions: dict[tuple[str, str], list[str]] = {}
+        self._postings: dict[tuple[str, Feature], list[str]] = {}
         for submission in submissions:
             assignment = assignments.get(submission.assignment_id)
             if assignment is None:
@@ -81,15 +92,23 @@ class ComparisonService:
             key = (digest, self.config_hashes[submission.assignment_id])
             if key not in self._cache:
                 self._cache[key] = extractor(submission.code, assignment.allowed_template)
-            indexed = IndexedSubmission(
+            entry = IndexedSubmission(
                 submission.submission_id,
                 submission.student_id,
                 submission.assignment_id,
                 digest,
                 self._cache[key],
             )
-            self._entries[indexed.submission_id] = indexed
-            self._groups.setdefault(indexed.assignment_id, []).append(indexed)
+            self._entries[entry.submission_id] = entry
+            self._groups.setdefault(entry.assignment_id, []).append(entry)
+            self._versions.setdefault((entry.assignment_id, entry.student_id), []).append(
+                entry.submission_id
+            )
+            if self.index_version:
+                for feature in entry.features.spans:
+                    self._postings.setdefault((entry.assignment_id, feature), []).append(
+                        entry.submission_id
+                    )
 
     def _entry(self, submission_id: str) -> IndexedSubmission:
         try:
@@ -140,19 +159,26 @@ class ComparisonService:
         if type(k) is not int or k < 1:
             raise AnalysisFailure("k должно быть положительным целым числом", field="k")
         left = self._entry(submission_id)
-        group = self._groups[left.assignment_id]
         same_student = tuple(
             sorted(
-                item.submission_id
-                for item in group
-                if item.student_id == left.student_id and item.submission_id != submission_id
+                key
+                for key in self._versions[left.assignment_id, left.student_id]
+                if key != submission_id
             )
         )
+        candidates: Iterable[IndexedSubmission]
+        if self.index_version:
+            ids: set[str] = set()
+            for feature in left.features.spans:
+                ids.update(self._postings.get((left.assignment_id, feature), ()))
+            candidates = (self._entries[identifier] for identifier in ids)
+        else:
+            candidates = self._groups[left.assignment_id]
         comparisons = 0
 
         def score_items() -> Iterable[tuple[float, str, float | None, IndexedSubmission]]:
             nonlocal comparisons
-            for item in group:
+            for item in candidates:
                 if item.student_id == left.student_id:
                     continue
                 comparisons += 1
@@ -161,9 +187,19 @@ class ComparisonService:
 
         best = nsmallest(k, score_items(), key=lambda item: (item[0], item[1]))
         return SearchResult(
+            1,
             left.assignment_id,
             self.method,
-            self.config_hashes[left.assignment_id],
+            self.config_version,
+            stable_hash(
+                {
+                    "features": self.config_hashes[left.assignment_id],
+                    "index": self.index_version,
+                    "threshold": threshold,
+                }
+            ),
+            self.index_version,
+            threshold,
             comparisons,
             same_student,
             tuple(self._result(left, item, score, threshold) for _, _, score, item in best),

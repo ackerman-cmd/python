@@ -5,8 +5,8 @@ from pathlib import Path
 import pytest
 
 from school_lab.adapters.dto import parse_submission
-from school_lab.analyzers.similarity import TOKEN_VERSION, token_features
-from school_lab.application.similarity import ComparisonService
+from school_lab.analyzers.similarity import TOKEN_VERSION, ast_features, token_features
+from school_lab.application.similarity import INDEX_VERSION, ComparisonService
 from school_lab.domain.errors import AnalysisFailure
 from school_lab.domain.models import Assignment
 from school_lab.domain.similarity import jaccard
@@ -90,3 +90,75 @@ def test_cli_similarity_runs_streaming_import(
     assert result["comparisons"] == 1
     assert result["candidates"][0]["right"]["submission_id"] == "sub-002"
     assert len(result["import"]["errors"]) == 3
+
+
+def test_ast_normalizes_names_preserves_evidence_and_rejects_invalid_code() -> None:
+    template = "from typing import Iterable\n"
+    a = ast_features(template + "def solve(values):\n    return values[0]\n", template)
+    b = ast_features("def renamed(items):\n    return items[0]\n", template)
+    invalid = ast_features("def (\n", template)
+    assert jaccard(a, b) == 1
+    assert a.template == ((1, 1),)
+    assert all(2 <= lo <= hi <= 3 for lo, hi in a.spans.values())
+    assert jaccard(a, invalid) is None and invalid.diagnostic == "SyntaxError (строка 1)"
+
+
+def test_candidate_index_omits_zeros_but_keeps_positive_results(
+    payload: dict[str, object],
+) -> None:
+    a = parse_submission({**payload, "code": "number = 5 * 2\n"})
+    b = replace(a, submission_id="copy", student_id="b")
+    c = replace(a, submission_id="unrelated", student_id="c", code="print('hi')\n")
+    specs = {a.assignment_id: Assignment(a.assignment_id, "", ())}
+    full = ComparisonService([a, b, c], specs, method=TOKEN_VERSION, extractor=token_features)
+    indexed = ComparisonService(
+        [a, b, c], specs, method=TOKEN_VERSION, extractor=token_features, indexed=True
+    )
+    scan, filtered = full.top_k(a.submission_id), indexed.top_k(a.submission_id)
+    assert scan.comparisons == 2 and filtered.comparisons == 1
+    assert filtered.index_version == INDEX_VERSION
+    assert filtered.candidates == scan.candidates[:1]
+    assert scan.candidates[1].score == 0
+
+
+def test_added_template_changes_config_hash_and_removes_template_only_score(
+    payload: dict[str, object],
+) -> None:
+    code = "from typing import Iterable\n"
+    a = parse_submission({**payload, "code": code})
+    b = replace(a, submission_id="student-b", student_id="b")
+    assignment = Assignment(a.assignment_id, "", ())
+    before = ComparisonService(
+        [a, b], {a.assignment_id: assignment}, method=TOKEN_VERSION, extractor=token_features
+    )
+    after = ComparisonService(
+        [a, b],
+        {a.assignment_id: replace(assignment, allowed_template=code)},
+        method=TOKEN_VERSION,
+        extractor=token_features,
+        config_version="2",
+    )
+    old, new = before.top_k(a.submission_id), after.top_k(a.submission_id)
+    assert old.config_hash != new.config_hash
+    assert old.candidates[0].score == 1 and new.candidates[0].score is None
+    assert new.candidates[0].right.template_lines == ((1, 1),)
+
+
+def test_similarity_service_rejects_unknown_submissions_and_conflicting_ids(
+    payload: dict[str, object],
+) -> None:
+    a = parse_submission(payload)
+    specs = {a.assignment_id: Assignment(a.assignment_id, "", ())}
+    service = ComparisonService([a, a], specs, method=TOKEN_VERSION, extractor=token_features)
+    with pytest.raises(AnalysisFailure, match="не найдена"):
+        service.top_k("missing")
+    with pytest.raises(AnalysisFailure, match="положительным"):
+        service.top_k(a.submission_id, k=0)
+    with pytest.raises(AnalysisFailure, match="Порог"):
+        service.top_k(a.submission_id, threshold=float("nan"))
+    with pytest.raises(AnalysisFailure, match="Конфликт"):
+        ComparisonService(
+            [a, replace(a, code="pass")], specs, method=TOKEN_VERSION, extractor=token_features
+        )
+    with pytest.raises(AnalysisFailure, match="Неизвестное задание"):
+        ComparisonService([a], {}, method=TOKEN_VERSION, extractor=token_features)
