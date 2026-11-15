@@ -8,6 +8,15 @@ ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data/lab2"
 ASSIGNMENT = "lab2-aggregate"
 TEMPLATE = "from typing import Iterable\n"
+TEMPLATE_BODIES = {
+    "tune": (
+        'raise RuntimeError("stub")\n',
+        'assert False, "unfinished"\n',
+        "...\n",
+        "del result\n",
+    ),
+    "eval": ("", "pass\n", "42\n", "# no implementation\n"),
+}
 FAMILIES = (
     (
         "positive-squares",
@@ -150,7 +159,7 @@ def main() -> None:
         # Structurally unrelated snippets sharing only the scaffolding.
         template_ids = [
             add(f"{split}-template-{i}", split, "lab2-template", "template-only", TEMPLATE + body)
-            for i, body in enumerate(("", "pass\n", "42\n", "# no implementation\n"))
+            for i, body in enumerate(TEMPLATE_BODIES[split])
         ]
         for left, right in combinations(template_ids, 2):
             pair(left, right, split, "lab2-template", False, True)

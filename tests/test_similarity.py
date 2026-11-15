@@ -1,4 +1,5 @@
 import json
+from collections.abc import Callable
 from dataclasses import replace
 from pathlib import Path
 
@@ -9,7 +10,7 @@ from school_lab.analyzers.similarity import TOKEN_VERSION, ast_features, token_f
 from school_lab.application.similarity import INDEX_VERSION, ComparisonService
 from school_lab.domain.errors import AnalysisFailure
 from school_lab.domain.models import Assignment
-from school_lab.domain.similarity import jaccard
+from school_lab.domain.similarity import CodeFeatures, jaccard
 from school_lab.interfaces.cli import main
 
 
@@ -100,7 +101,97 @@ def test_ast_normalizes_names_preserves_evidence_and_rejects_invalid_code() -> N
     assert jaccard(a, b) == 1
     assert a.template == ((1, 1),)
     assert all(2 <= lo <= hi <= 3 for lo, hi in a.spans.values())
-    assert jaccard(a, invalid) is None and invalid.diagnostic == "SyntaxError (строка 1)"
+    assert jaccard(a, invalid) is None
+    assert invalid.diagnostic and invalid.diagnostic.startswith("SyntaxError (строка 1)")
+
+
+@pytest.mark.parametrize("extract", [token_features, ast_features])
+@pytest.mark.parametrize(
+    "code, error",
+    [
+        ("return 1 + 2\n", "'return' outside function"),
+        ("break\nprint(1)\n", "'break' outside loop"),
+        ("def f(x, x):\n    return x\n", "duplicate argument"),
+    ],
+)
+def test_methods_reject_code_that_parses_but_does_not_compile(
+    extract: Callable[[str, str], CodeFeatures], code: str, error: str
+) -> None:
+    invalid = extract(code, "")
+    assert invalid.diagnostic and error in invalid.diagnostic
+    assert "строка 1" in invalid.diagnostic
+    assert not invalid.spans
+    assert jaccard(invalid, invalid) is None
+
+
+@pytest.mark.parametrize("extract", [token_features, ast_features])
+@pytest.mark.parametrize("eol", ["\n", "\r\n", "\r"], ids=["lf", "crlf", "cr"])
+def test_template_and_features_use_python_physical_lines(
+    extract: Callable[[str, str], CodeFeatures], eol: str
+) -> None:
+    template = "from typing import Iterable"
+    code = eol.join(('s = """before\u2028after"""', template, "x = 1 + 2", ""))
+    result = extract(code, template + "\r\n")
+    assert result.template == ((2, 2),)
+    assert result.diagnostic is None
+    assert {start for start, _ in result.spans.values()} == {1, 3}
+    assert all(not lo <= 2 <= hi for lo, hi in result.spans.values())
+
+
+@pytest.mark.parametrize("left_args, right_args", [("x, /", "*, x"), ("*, x=1, y", "*, x, y=1")])
+def test_ast_preserves_argument_roles_and_default_positions(
+    left_args: str, right_args: str
+) -> None:
+    a = ast_features(f"def f(\n    {left_args}\n):\n    return x\n", "")
+    b = ast_features(f"def f(\n    {right_args}\n):\n    return x\n", "")
+    score = jaccard(a, b)
+    assert score is not None and 0 < score < 1
+    assert a.diagnostic is None and b.diagnostic is None
+    assert [span for feature, span in a.spans.items() if feature[0] == "arguments"] == [(1, 2)]
+
+
+@pytest.mark.parametrize(
+    "code, status, has_diagnostic",
+    [
+        ("return 1 + 2\n", "invalid_code", True),
+        ("# comment only\n", "insufficient_features", False),
+        ("x = 1 + 2\n", "ready", False),
+    ],
+)
+def test_indexed_cli_reports_query_status_even_when_no_candidates(
+    payload: dict[str, object],
+    tmp_path: Path,
+    data_dir: Path,
+    capsys: pytest.CaptureFixture[str],
+    code: str,
+    status: str,
+    has_diagnostic: bool,
+) -> None:
+    path = tmp_path / "submissions.jsonl"
+    rows = [
+        {**payload, "code": code},
+        {**payload, "submission_id": "independent", "student_id": "other", "code": "print(5)"},
+    ]
+    path.write_text("".join(json.dumps(row) + "\n" for row in rows), encoding="utf-8")
+    assert (
+        main(
+            [
+                "similarity",
+                str(path),
+                str(payload["submission_id"]),
+                "--assignments",
+                str(data_dir / "assignments.json"),
+                "--indexed",
+            ]
+        )
+        == 0
+    )
+    result = json.loads(capsys.readouterr().out)
+    assert result["schema_version"] == 2
+    assert result["comparisons"] == 0 and result["candidates"] == []
+    assert result["query"]["submission_id"] == payload["submission_id"]
+    assert result["query"]["status"] == status
+    assert bool(result["query"]["diagnostic"]) is has_diagnostic
 
 
 def test_candidate_index_omits_zeros_but_keeps_positive_results(

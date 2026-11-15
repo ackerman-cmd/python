@@ -1,5 +1,5 @@
 {
-  "corpus_hash": "72592a1f5312651bb04faeae98b35e5653b9508e2e118bfc7ceb04ae5d0185dc",
+  "corpus_hash": "2be0024576da5d4fcb14cf0bd437e1db3f650e10f073f0f907f45a109211b8cc",
   "submissions": 68,
   "pairs": 90,
   "template_only_pairs": 12,
@@ -30,9 +30,10 @@
     ]
   },
   "undefined_policy": "No review flag; counted as negative and reported separately.",
+  "split_policy": "Disjoint families and no identical nonblank code across splits.",
   "threshold_policy": "Maximize tune F1 over positive observed scores and 1; ties prefer higher.",
   "methods": {
-    "token-jaccard-1": {
+    "token-jaccard-2": {
       "threshold": 0.4166666666666667,
       "tune": {
         "tp": 16,
@@ -42,9 +43,9 @@
         "precision": 0.8888888888888888,
         "recall": 0.6666666666666666,
         "f1": 0.7619047619047619,
-        "undefined": 6,
+        "undefined": 1,
         "undefined_positive": 0,
-        "undefined_rate": 0.13333333333333333
+        "undefined_rate": 0.022222222222222223
       },
       "eval": {
         "tp": 16,
@@ -511,7 +512,7 @@
         }
       ]
     },
-    "ast-jaccard-1": {
+    "ast-jaccard-2": {
       "threshold": 1.0,
       "tune": {
         "tp": 18,
@@ -521,9 +522,9 @@
         "precision": 1.0,
         "recall": 0.75,
         "f1": 0.8571428571428571,
-        "undefined": 1,
+        "undefined": 0,
         "undefined_positive": 0,
-        "undefined_rate": 0.022222222222222223
+        "undefined_rate": 0.0
       },
       "eval": {
         "tp": 18,
@@ -575,7 +576,7 @@
           "split": "eval",
           "derivation_relation": true,
           "template_only": false,
-          "score": 0.2222222222222222,
+          "score": 0.25,
           "review_required": false
         },
         {
@@ -615,7 +616,7 @@
           "split": "eval",
           "derivation_relation": true,
           "template_only": false,
-          "score": 0.25,
+          "score": 0.28,
           "review_required": false
         },
         {
@@ -655,7 +656,7 @@
           "split": "eval",
           "derivation_relation": true,
           "template_only": false,
-          "score": 0.2222222222222222,
+          "score": 0.2631578947368421,
           "review_required": false
         },
         {
@@ -695,7 +696,7 @@
           "split": "eval",
           "derivation_relation": true,
           "template_only": false,
-          "score": 0.3333333333333333,
+          "score": 0.375,
           "review_required": false
         },
         {
@@ -735,7 +736,7 @@
           "split": "eval",
           "derivation_relation": true,
           "template_only": false,
-          "score": 0.2608695652173913,
+          "score": 0.2916666666666667,
           "review_required": false
         },
         {
@@ -775,7 +776,7 @@
           "split": "eval",
           "derivation_relation": true,
           "template_only": false,
-          "score": 0.2857142857142857,
+          "score": 0.3181818181818182,
           "review_required": false
         },
         {
@@ -785,7 +786,7 @@
           "split": "eval",
           "derivation_relation": false,
           "template_only": false,
-          "score": 0.47058823529411764,
+          "score": 0.5,
           "review_required": false
         },
         {
@@ -795,7 +796,7 @@
           "split": "eval",
           "derivation_relation": false,
           "template_only": false,
-          "score": 0.42857142857142855,
+          "score": 0.4666666666666667,
           "review_required": false
         },
         {
@@ -805,7 +806,7 @@
           "split": "eval",
           "derivation_relation": false,
           "template_only": false,
-          "score": 0.42857142857142855,
+          "score": 0.4666666666666667,
           "review_required": false
         },
         {
@@ -815,42 +816,12 @@
           "split": "eval",
           "derivation_relation": false,
           "template_only": false,
-          "score": 0.6,
+          "score": 0.625,
           "review_required": false
         },
         {
           "left": "negative-squares-original",
           "right": "cube-sum-original",
-          "assignment_id": "lab2-aggregate",
-          "split": "eval",
-          "derivation_relation": false,
-          "template_only": false,
-          "score": 0.6428571428571429,
-          "review_required": false
-        },
-        {
-          "left": "count-odd-original",
-          "right": "minimum-original",
-          "assignment_id": "lab2-aggregate",
-          "split": "eval",
-          "derivation_relation": false,
-          "template_only": false,
-          "score": 0.3125,
-          "review_required": false
-        },
-        {
-          "left": "count-odd-original",
-          "right": "unique-count-original",
-          "assignment_id": "lab2-aggregate",
-          "split": "eval",
-          "derivation_relation": false,
-          "template_only": false,
-          "score": 0.4,
-          "review_required": false
-        },
-        {
-          "left": "count-odd-original",
-          "right": "positive-count-original",
           "assignment_id": "lab2-aggregate",
           "split": "eval",
           "derivation_relation": false,
@@ -860,12 +831,42 @@
         },
         {
           "left": "count-odd-original",
+          "right": "minimum-original",
+          "assignment_id": "lab2-aggregate",
+          "split": "eval",
+          "derivation_relation": false,
+          "template_only": false,
+          "score": 0.35294117647058826,
+          "review_required": false
+        },
+        {
+          "left": "count-odd-original",
+          "right": "unique-count-original",
+          "assignment_id": "lab2-aggregate",
+          "split": "eval",
+          "derivation_relation": false,
+          "template_only": false,
+          "score": 0.4375,
+          "review_required": false
+        },
+        {
+          "left": "count-odd-original",
+          "right": "positive-count-original",
+          "assignment_id": "lab2-aggregate",
+          "split": "eval",
+          "derivation_relation": false,
+          "template_only": false,
+          "score": 0.6875,
+          "review_required": false
+        },
+        {
+          "left": "count-odd-original",
           "right": "cube-sum-original",
           "assignment_id": "lab2-aggregate",
           "split": "eval",
           "derivation_relation": false,
           "template_only": false,
-          "score": 0.5,
+          "score": 0.5294117647058824,
           "review_required": false
         },
         {
@@ -875,7 +876,7 @@
           "split": "eval",
           "derivation_relation": false,
           "template_only": false,
-          "score": 0.45454545454545453,
+          "score": 0.5,
           "review_required": false
         },
         {
@@ -885,7 +886,7 @@
           "split": "eval",
           "derivation_relation": false,
           "template_only": false,
-          "score": 0.42857142857142855,
+          "score": 0.4666666666666667,
           "review_required": false
         },
         {
@@ -895,7 +896,7 @@
           "split": "eval",
           "derivation_relation": false,
           "template_only": false,
-          "score": 0.35714285714285715,
+          "score": 0.4,
           "review_required": false
         },
         {
@@ -905,7 +906,7 @@
           "split": "eval",
           "derivation_relation": false,
           "template_only": false,
-          "score": 0.42857142857142855,
+          "score": 0.4666666666666667,
           "review_required": false
         },
         {
@@ -915,7 +916,7 @@
           "split": "eval",
           "derivation_relation": false,
           "template_only": false,
-          "score": 0.46153846153846156,
+          "score": 0.5,
           "review_required": false
         },
         {
@@ -925,7 +926,7 @@
           "split": "eval",
           "derivation_relation": false,
           "template_only": false,
-          "score": 0.5333333333333333,
+          "score": 0.5625,
           "review_required": false
         },
         {

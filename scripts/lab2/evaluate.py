@@ -9,10 +9,12 @@ from typing import TypedDict, cast
 
 from school_lab.adapters.acceptance import import_source
 from school_lab.adapters.sources import JsonlSource
+from school_lab.analyzers.basic import normalize_newlines
 from school_lab.analyzers.similarity import AST_VERSION, TOKEN_VERSION, ast_features, token_features
 from school_lab.application.similarity import ComparisonService
 from school_lab.bootstrap import build_application, load_assignments
 from school_lab.domain.hashing import stable_hash
+from school_lab.domain.models import Submission
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data/lab2"
@@ -45,14 +47,18 @@ def load_rows(path: Path) -> Iterable[object]:
 
 
 def validate_labels(
-    provenance: list[Provenance], labels: list[Label], accepted: dict[str, str]
+    provenance: list[Provenance], labels: list[Label], accepted: tuple[Submission, ...]
 ) -> None:
     by_id = {item["submission_id"]: item for item in provenance}
-    if len(by_id) != len(provenance) or set(accepted) != set(by_id):
+    submissions = {item.submission_id: item for item in accepted}
+    if len(by_id) != len(provenance) or submissions.keys() != by_id.keys():
         raise ValueError("Divergent provenance and submissions")
     splits: dict[str, set[str]] = {name: set() for name in ("tune", "eval")}
     for identifier, row in by_id.items():
-        if row["split"] not in splits or accepted[identifier] != row["assignment_id"]:
+        if (
+            row["split"] not in splits
+            or submissions[identifier].assignment_id != row["assignment_id"]
+        ):
             raise ValueError("Invalid provenance")
         splits[row["split"]].add(row["family_id"])
         if parent_id := row["parent_id"]:
@@ -61,6 +67,15 @@ def validate_labels(
                 raise ValueError("Provenance parent outside its family, split or assignment")
     if any(left & right for left, right in combinations(splits.values(), 2)):
         raise ValueError("Family leakage between tune and eval")
+    code_splits: dict[str, tuple[str, str]] = {}
+    for identifier, item in submissions.items():
+        code = normalize_newlines(item.code)
+        if not code.strip():
+            continue
+        split = by_id[identifier]["split"]
+        earlier_id, earlier_split = code_splits.setdefault(stable_hash(code), (identifier, split))
+        if split != earlier_split:
+            raise ValueError(f"Code leakage between tune and eval: {earlier_id}, {identifier}")
     seen: set[frozenset[str]] = set()
     for label in labels:
         key = frozenset((label["left"], label["right"]))
@@ -119,9 +134,7 @@ def evaluate(data: Path) -> dict[str, object]:
     assignments = load_assignments(data / "assignments.json")
     provenance = [cast(Provenance, row) for row in load_rows(data / "provenance.jsonl")]
     labels = [cast(Label, row) for row in load_rows(data / "pairs.jsonl")]
-    validate_labels(
-        provenance, labels, {item.submission_id: item.assignment_id for item in submissions}
-    )
+    validate_labels(provenance, labels, submissions)
     results = {}
     for method, extract in ((TOKEN_VERSION, token_features), (AST_VERSION, ast_features)):
         service = ComparisonService(submissions, assignments, method=method, extractor=extract)
@@ -160,6 +173,7 @@ def evaluate(data: Path) -> dict[str, object]:
             for split in ("tune", "eval")
         },
         "undefined_policy": "No review flag; counted as negative and reported separately.",
+        "split_policy": "Disjoint families and no identical nonblank code across splits.",
         "threshold_policy": (
             "Maximize tune F1 over positive observed scores and 1; ties prefer higher."
         ),

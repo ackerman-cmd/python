@@ -3,6 +3,7 @@
 from collections.abc import Callable, Iterable, Mapping
 from dataclasses import dataclass
 from heapq import nsmallest
+from typing import Literal
 
 from school_lab.domain.errors import AnalysisFailure
 from school_lab.domain.hashing import stable_hash, submission_hash
@@ -39,6 +40,15 @@ class PairResult:
 
 
 @dataclass(frozen=True, slots=True)
+class QueryStatus:
+    submission_id: str
+    submission_hash: str
+    status: Literal["ready", "invalid_code", "insufficient_features"]
+    diagnostic: str | None
+    template_lines: tuple[LineRange, ...]
+
+
+@dataclass(frozen=True, slots=True)
 class SearchResult:
     schema_version: int
     assignment_id: str
@@ -47,6 +57,7 @@ class SearchResult:
     config_hash: str
     index_version: str | None
     threshold: float
+    query: QueryStatus
     comparisons: int
     same_student_versions: tuple[str, ...]
     candidates: tuple[PairResult, ...]
@@ -159,6 +170,13 @@ class ComparisonService:
         if type(k) is not int or k < 1:
             raise AnalysisFailure("k должно быть положительным целым числом", field="k")
         left = self._entry(submission_id)
+        status: Literal["ready", "invalid_code", "insufficient_features"]
+        if left.features.diagnostic is not None:
+            status = "invalid_code"
+        elif not left.features.spans:
+            status = "insufficient_features"
+        else:
+            status = "ready"
         same_student = tuple(
             sorted(
                 key
@@ -187,7 +205,7 @@ class ComparisonService:
 
         best = nsmallest(k, score_items(), key=lambda item: (item[0], item[1]))
         return SearchResult(
-            1,
+            2,
             left.assignment_id,
             self.method,
             self.config_version,
@@ -200,6 +218,13 @@ class ComparisonService:
             ),
             self.index_version,
             threshold,
+            QueryStatus(
+                submission_id,
+                left.submission_hash,
+                status,
+                left.features.diagnostic,
+                left.features.template,
+            ),
             comparisons,
             same_student,
             tuple(self._result(left, item, score, threshold) for _, _, score, item in best),
