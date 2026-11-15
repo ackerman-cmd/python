@@ -9,10 +9,16 @@ def nonempty_line_numbers(text: str) -> tuple[int, ...]:
     return tuple(number for number, line in enumerate(text.splitlines(), 1) if line.strip())
 
 
+def normalize_newlines(source: str) -> str:
+    """Normalize Python physical line endings without splitting Unicode literals."""
+    return source.replace("\r\n", "\n").replace("\r", "\n")
+
+
 def template_ranges(code: str, template: str) -> tuple[tuple[int, int], ...]:
     if not template.strip():
         return ()
-    source_lines, template_lines = code.splitlines(), template.splitlines()
+    source_lines = normalize_newlines(code).removesuffix("\n").split("\n")
+    template_lines = normalize_newlines(template).removesuffix("\n").split("\n")
     width = len(template_lines)
     return tuple(
         (index + 1, index + width)

@@ -1,5 +1,6 @@
 include README.md AI_USAGE.md requirements-dev.lock
 include .gitignore
 recursive-include data *.json *.jsonl
-recursive-include docs *.md *.json *.txt *.xml
+recursive-include docs *.md *.json *.xml
+recursive-include scripts *.py
 recursive-include tests *.py

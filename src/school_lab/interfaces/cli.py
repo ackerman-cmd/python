@@ -1,12 +1,15 @@
 import argparse
 import json
 import sys
+from dataclasses import asdict
 from pathlib import Path
 
 from school_lab.adapters.acceptance import import_source
 from school_lab.adapters.sources import JsonlSource
-from school_lab.bootstrap import build_application, load_config
-from school_lab.domain.errors import ApplicationError
+from school_lab.analyzers.similarity import AST_VERSION, TOKEN_VERSION, ast_features, token_features
+from school_lab.application.similarity import ComparisonService
+from school_lab.bootstrap import build_application, load_assignments, load_config
+from school_lab.domain.errors import ApplicationError, ConfigurationError
 from school_lab.examples.benchmark import benchmark_import
 from school_lab.examples.demo import run_demo
 
@@ -22,7 +25,7 @@ def _positive(value: str) -> int:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="ЛР 1, Backend: приём и анализ работ")
+    parser = argparse.ArgumentParser(description="Backend: приём и анализ работ")
     commands = parser.add_subparsers(dest="command", required=True)
     importer = commands.add_parser("import", help="Импорт JSONL в новый in-memory репозиторий")
     importer.add_argument("path", type=Path)
@@ -33,6 +36,17 @@ def main(argv: list[str] | None = None) -> int:
     benchmark.add_argument("--data-dir", type=Path, default=Path("data"))
     benchmark.add_argument("--records", type=_positive, default=1000)
     benchmark.add_argument("--repeats", type=_positive, default=5)
+    compare = commands.add_parser("similarity", help="Поиск похожих сдач для ручной проверки")
+    compare.add_argument("path", type=Path)
+    compare.add_argument("submission_id")
+    compare.add_argument("--assignments", type=Path, default=Path("data/assignments.json"))
+    compare.add_argument("--config-version", default="1")
+    compare.add_argument("--top-k", type=_positive, default=5)
+    compare.add_argument("--threshold", type=float, default=0.5)
+    compare.add_argument("--method", choices=("tokens", "ast"), default="tokens")
+    compare.add_argument(
+        "--indexed", action="store_true", help="Искать по индексу токеновых 3-грамм"
+    )
     args = parser.parse_args(argv)
     try:
         result: dict[str, object]
@@ -45,6 +59,31 @@ def main(argv: list[str] | None = None) -> int:
             exit_code = 1 if summary.errors else 0
         elif args.command == "demo":
             result = run_demo(args.data_dir)
+        elif args.command == "similarity":
+            app = build_application()
+            summary = import_source(JsonlSource(args.path), app.acceptance_adapter)
+            if not args.config_version.strip():
+                raise ConfigurationError("Нужна версия конфигурации", field="config_version")
+            if args.method == "ast" and args.indexed:
+                raise ConfigurationError("Индекс доступен для метода tokens", field="method")
+            method, extractor = (
+                (AST_VERSION, ast_features)
+                if args.method == "ast"
+                else (TOKEN_VERSION, token_features)
+            )
+            service = ComparisonService(
+                app.repository.all(),
+                load_assignments(args.assignments),
+                method=method,
+                extractor=extractor,
+                config_version=args.config_version,
+                indexed=args.indexed,
+            )
+            result = asdict(
+                service.top_k(args.submission_id, k=args.top_k, threshold=args.threshold)
+            )
+            result["import"] = summary.to_dict()
+            exit_code = 1 if summary.errors else 0
         else:
             result = benchmark_import(args.data_dir, args.records, args.repeats)
     except ApplicationError as exc:

@@ -22,7 +22,11 @@ from school_lab.domain.models import AnalysisContext
 from school_lab.interfaces.cli import main
 
 
-@pytest.mark.parametrize("bad", ["9" * 5000, "[" * 20_000 + "0" + "]" * 20_000])
+@pytest.mark.parametrize(
+    "bad",
+    ["9" * 5000, "[" * 20_000 + "0" + "]" * 20_000],
+    ids=["oversized-integer", "deeply-nested-array"],
+)
 def test_parser_limits_are_record_errors_and_import_continues(
     payload: dict[str, object],
     app: Application,

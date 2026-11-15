@@ -1,6 +1,6 @@
 # ЛР 1 — Приём работ и расширяемые анализаторы
 
-**Backend: основной вариант и углубление.** Python 3.12+, Pydantic 2.
+**Backend.** Python 3.12+, Pydantic 2. Итог ЛР 1 доступен по тегу `lab-1`.
 Приём неизменяемых версий, строгая валидация, частичный импорт JSONL и заменяемые анализаторы.
 Хранилище — в памяти процесса. Принятый код остаётся строкой и не выполняется.
 
@@ -122,6 +122,37 @@ print(len(summary.accepted), len(repeat.duplicate), report.analyzer_id)
 
 Эталон такого запуска сохранён в [demo.json](docs/evidence/demo.json).
 UUID отчётов и время следующего запуска будут отличаться.
+
+## ЛР 2 — поиск похожих сдач
+
+```bash
+python -m school_lab similarity data/lab2/submissions.jsonl negative-squares-original --assignments data/lab2/assignments.json --top-k 5 --threshold 0.4166666666666667
+python -m school_lab similarity data/lab2/submissions.jsonl negative-squares-original --assignments data/lab2/assignments.json --method ast --threshold 1
+python -m school_lab similarity data/lab2/submissions.jsonl negative-squares-original --assignments data/lab2/assignments.json --indexed --threshold 0.4166666666666667
+```
+
+Сервис сравнивает сдачи одного задания по Jaccard для множеств токеновых 3-грамм
+или признаков AST. Разрешённый шаблон задаётся в `--assignments` и виден отдельно
+от совпавшего кода. Выдача содержит балл и исходные диапазоны для обеих работ;
+при ошибке компиляции или пустом объединении признаков балл равен `null`.
+Код не выполняется. В схеме 2 поле `query` показывает статус исходной
+сдачи и диагностику, даже когда кандидатов нет.
+Поиск исключает исходную сдачу и отдельно показывает другие версии того же
+студента. `--indexed` доступен для токенов и пропускает работы без общей
+3-граммы. `review_required` означает ручную проверку; порог по умолчанию 0,5
+служит демонстрации, а команды выше используют пороги из эксперимента.
+
+Воспроизведение из корня репозитория:
+
+```bash
+python scripts/lab2/make_corpus.py
+python scripts/lab2/evaluate.py
+python scripts/lab2/benchmark.py --profile
+python -m pytest -q --cov=school_lab --cov-branch
+```
+
+Синтетический корпус находится в `data/lab2/`. Результаты, команды для защиты
+и ограничения — в [отчёте ЛР 2](docs/lab2/REPORT.md).
 
 ## Входные файлы и конфигурация
 
